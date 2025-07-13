@@ -1,6 +1,8 @@
 import app from "./app";
+import dotenv from "dotenv";
+dotenv.config();
 
-const PORT = 3001;
+const PORT = Number(process.env.PORT) || 3001;
 
 const startServer = async () => {
 
@@ -12,3 +14,4 @@ const startServer = async () => {
         console.error(error);
     }
 }
+startServer();
