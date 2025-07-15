@@ -11,9 +11,9 @@
 			"recommended": true
 		}
 	},
-    "organizeImports": {
-        "enabled": true
-    },
+	"organizeImports": {
+		"enabled": true
+	},
 	"files": {
 		"ignore": [
 			"node_modules",
