@@ -1,8 +1,9 @@
 import type { FastifyInstance } from "fastify";
 import createTransaction from "../controllers/transactions/createTransaction.controller";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { createTransactionSchema, getTransactionsSchema } from "../schemas/transaction.schema";
+import { createTransactionSchema, getTransactionsSchema, getTransactionsSummarySchema } from "../schemas/transaction.schema";
 import { getTransactions } from "../controllers/transactions/getTransactions.controller";
+import { getTransactionsSummary } from "../controllers/transactions/getTransactionsSummary.controller";
 
 const transactionRoutes = async (fastify: FastifyInstance) => {
   // Criar transação
@@ -25,14 +26,20 @@ const transactionRoutes = async (fastify: FastifyInstance) => {
     method: 'GET',
     url: '/',
     schema: {
-      querystring: {
-        type: 'object',
-        properties: getTransactionsJsonSchema.properties,
-        required: [],
-      },
+      querystring: zodToJsonSchema(getTransactionsSchema),
     },
     handler: getTransactions,
   });
+
+  // Buscar o resumo de transações
+  fastify.route({
+    method: 'GET',
+    url: '/summary',
+    schema: {
+        querystring: zodToJsonSchema(getTransactionsSummarySchema),
+    },
+    handler: getTransactionsSummary
+  })
 };
 
 export default transactionRoutes;
