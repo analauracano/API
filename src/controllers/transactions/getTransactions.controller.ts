@@ -55,3 +55,11 @@ export const getTransactions = async(request: FastifyRequest<{ Querystring: GetT
             reply.status(500).send({ error: 'Erro do servidor ao trazer transações' });
         }
 };
+
+async function debugTransactions() {
+  const results = await prisma.transaction.findMany({
+    where: { userId: 'ANALAURA' }
+  });
+  console.log(results);
+}
+debugTransactions();

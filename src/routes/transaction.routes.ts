@@ -1,15 +1,19 @@
 import type { FastifyInstance } from "fastify";
 import createTransaction from "../controllers/transactions/createTransaction.controller";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { createTransactionSchema, getTransactionsSchema, getTransactionsSummarySchema } from "../schemas/transaction.schema";
+import {
+  createTransactionSchema,
+  getTransactionsSchema,
+  getTransactionsSummarySchema,
+} from "../schemas/transaction.schema";
 import { getTransactions } from "../controllers/transactions/getTransactions.controller";
 import { getTransactionsSummary } from "../controllers/transactions/getTransactionsSummary.controller";
 
 const transactionRoutes = async (fastify: FastifyInstance) => {
   // Criar transação
   fastify.route({
-    method: 'POST',
-    url: '/',
+    method: "POST",
+    url: "/",
     schema: {
       body: zodToJsonSchema(createTransactionSchema),
     },
@@ -17,29 +21,34 @@ const transactionRoutes = async (fastify: FastifyInstance) => {
   });
 
   // Buscar transações com filtro
-  const getTransactionsJsonSchema = zodToJsonSchema(getTransactionsSchema) as {
-    type: 'object';
-    properties: Record<string, unknown>;
-  };
-
+  const getTransactionsJsonSchema = zodToJsonSchema(getTransactionsSchema) as any;
   fastify.route({
-    method: 'GET',
-    url: '/',
+    method: "GET",
+    url: "/",
     schema: {
-      querystring: zodToJsonSchema(getTransactionsSchema),
+      querystring: {
+        type: "object",
+        properties: getTransactionsJsonSchema.properties,
+        required: [], // ou ['month', 'year'] se quiser obrigatórios
+      },
     },
     handler: getTransactions,
   });
 
   // Buscar o resumo de transações
+  const getSummaryJsonSchema = zodToJsonSchema(getTransactionsSummarySchema) as any;
   fastify.route({
-    method: 'GET',
-    url: '/summary',
+    method: "GET",
+    url: "/summary",
     schema: {
-        querystring: zodToJsonSchema(getTransactionsSummarySchema),
+      querystring: {
+        type: "object",
+        properties: getSummaryJsonSchema.properties,
+        required: ["month", "year"],
+      },
     },
-    handler: getTransactionsSummary
-  })
+    handler: getTransactionsSummary,
+  });
 };
 
 export default transactionRoutes;
