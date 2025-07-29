@@ -3,11 +3,10 @@ import type { getTransactionsSummaryQuery } from "../../schemas/transaction.sche
 import dayjs from "dayjs";
 import utc from 'dayjs/plugin/utc';
 import prisma from "../../config/prisma";
-import { CategorySummary } from "../../types/category.types";
+import type { CategorySummary } from "../../types/category.types";
 import { TransactionType } from "@prisma/client";
-
+import type { TransactionSummary } from "../../types/transaction.type";
 dayjs.extend(utc);
-
 
 export const getTransactionsSummary = async (request: FastifyRequest<{Querystring: getTransactionsSummaryQuery}>, reply: FastifyReply): Promise<void> => {
     const userId = 'ANALAURA';
@@ -63,6 +62,16 @@ export const getTransactionsSummary = async (request: FastifyRequest<{Querystrin
                     } else {
                         totalIncomes += transaction.amount
                     }
+
+                    const summary: TransactionSummary = {
+                        totalExpenses,
+                        totalIncomes,
+                        totalBalance: Number((totalIncomes - totalExpenses).toFixed(2)),
+                        expensesByCategory: Array.from(groupedExpenses.values()).map( (entry) => ({
+                            ...entry,
+                            percentage: Number.parseFloat(((entry.amount / totalExpenses) * 100).toFixed(2)),
+                        })).sort((a,b) => b.amount - a.amount),
+                    };
                  }
 
 

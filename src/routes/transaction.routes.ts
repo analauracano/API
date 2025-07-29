@@ -3,11 +3,13 @@ import createTransaction from "../controllers/transactions/createTransaction.con
 import { zodToJsonSchema } from "zod-to-json-schema";
 import {
   createTransactionSchema,
+  deleteTransactionSchema,
   getTransactionsSchema,
   getTransactionsSummarySchema,
 } from "../schemas/transaction.schema";
 import { getTransactions } from "../controllers/transactions/getTransactions.controller";
 import { getTransactionsSummary } from "../controllers/transactions/getTransactionsSummary.controller";
+import { deleteTransation } from "../controllers/transactions/deleteTransation.controller";
 
 const transactionRoutes = async (fastify: FastifyInstance) => {
   // Criar transação
@@ -21,34 +23,43 @@ const transactionRoutes = async (fastify: FastifyInstance) => {
   });
 
   // Buscar transações com filtro
-  const getTransactionsJsonSchema = zodToJsonSchema(getTransactionsSchema) as any;
   fastify.route({
     method: "GET",
     url: "/",
     schema: {
       querystring: {
         type: "object",
-        properties: getTransactionsJsonSchema.properties,
-        required: [], // ou ['month', 'year'] se quiser obrigatórios
+        properties: {
+          month: { type: "string" },
+          year: { type: "string" },
+      },
+      required: ['month', 'year'],
       },
     },
     handler: getTransactions,
   });
+  console.log('Query recebida: request.query');
 
   // Buscar o resumo de transações
-  const getSummaryJsonSchema = zodToJsonSchema(getTransactionsSummarySchema) as any;
   fastify.route({
     method: "GET",
     url: "/summary",
     schema: {
-      querystring: {
-        type: "object",
-        properties: getSummaryJsonSchema.properties,
-        required: ["month", "year"],
-      },
+      querystring: zodToJsonSchema(getTransactionsSummarySchema),
     },
     handler: getTransactionsSummary,
   });
+
+  // Deletar transação
+
+  fastify.route({
+    method: "DELETE",
+    url: "/:id",
+    schema: {
+      params: zodToJsonSchema(deleteTransactionSchema)
+    },
+    handler: deleteTransation
+  })
 };
 
 export default transactionRoutes;

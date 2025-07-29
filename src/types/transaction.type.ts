@@ -13,7 +13,7 @@ export interface TransactionFilter {
 }
 export interface TransactionSummary {
     totalExpenses: number;
-    totalIncome: number;
+    totalIncomes: number;
     totalBalance: number;
     expensesByCategory: CategorySummary[];
 }

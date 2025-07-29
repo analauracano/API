@@ -7,7 +7,6 @@ import prisma from "../../config/prisma";
 
 dayjs.extend(utc);
 
-
 export const getTransactions = async(request: FastifyRequest<{ Querystring: GetTransactionsQuery }>, reply: FastifyReply): Promise<void> => {
     const userId = 'ANALAURA'
 
