@@ -1,17 +1,12 @@
-import type { FastifyInstance } from "fastify";
-import categoryRoutes from "./category.routes";
-import transactionRoutes from "./transaction.routes";
+import type { FastifyInstance } from 'fastify';
 
-async function routes(fastify: FastifyInstance):Promise<void> {
+async function routes(fastify: FastifyInstance): Promise<void>{
     fastify.get('/health', async() => {
         return {
             status: 'ok',
-            message: 'API is running'
+            message: 'API rodando normalmente'
         }
     })
-
-    fastify.register(categoryRoutes, {prefix: '/categories'})
-    fastify.register(transactionRoutes, {prefix: '/transactions'})
 }
 
 export default routes;

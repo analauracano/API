@@ -1,15 +1,11 @@
-import fastify from "fastify";
-import type { FastifyInstance } from "fastify";
-import routes from "./routes";
-import { env } from "./config/env";
+import Fastify from 'fastify';
+import type { FastifyInstance } from 'fastify';
+import routes from './routes';
 
-const app: FastifyInstance = fastify({
-    logger: {
-        level: env.NODE_ENV === "dev" ? "info" : "error",
-    },
-})
+const app: FastifyInstance = Fastify({
+    logger: true
+});
 
-app.register(routes, {
-    prefix: '/api'})
+app.register(routes)
 
 export default app;
