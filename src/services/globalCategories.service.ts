@@ -46,6 +46,6 @@ export const initializeGlobalCategories = async(): Promise<Category[]> => {
         }
     }
 
-    console.log('✔ Todas as categorias foram criadas com sucesso!')
+    console.log('✅ Todas as categorias foram criadas com sucesso!')
     return createdCategories;
 }
