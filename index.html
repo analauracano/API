@@ -4,21 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TechMarket - Extrato Financeiro</title>
-     <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <header>Extrato Bancário - TechMarket</header>
 
   <main>
+    <!-- Extrato -->
     <div id="saldo-conta">Saldo: R$ 0,00</div>
-    <ul id="lista-transferencias">
-        
-    </ul>
+    <ul id="lista-transferencias"></ul>
+
+    <!-- Formulário de abertura de conta -->
+    <h2>Abrir Conta</h2>
+    <form id="form-conta">
+        <label>
+            CPF:
+            <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14">
+        </label>
+        <label>
+            Data de Nascimento:
+            <input type="text" id="data-nascimento" placeholder="dd/mm/aaaa" maxlength="10">
+        </label>
+        <label>
+            Telefone:
+            <input type="text" id="telefone" placeholder="(00) 00000-0000" maxlength="15">
+        </label>
+        <button type="submit">Enviar</button>
+    </form>
+    <div id="erros" style="margin-top: 1rem;"></div>
   </main>
 
-
-  <script src="script.js">  </script>
+  <script src="script.js"></script>
 
 </body>
 </html>
